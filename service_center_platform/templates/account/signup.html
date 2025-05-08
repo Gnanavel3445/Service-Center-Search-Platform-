@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sign Up{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/signup.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="signup-container">
+    <h1 class="signup-title">Sign Up</h1>
+    <p class="signup-subtitle">
+        Already have an account? <a href="{% url 'account_login' %}">Sign In</a>.
+    </p>
+    <form method="post" action="{% url 'account_signup' %}" class="signup-form">
+        {% csrf_token %}
+        <div class="form-fields">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="signup-button">Sign Up</button>
+    </form>
+    <div class="signup-footer">
+        <p><a href="{% url 'account_reset_password' %}">Forgot Password?</a></p>
+    </div>
+</div>
+{% endblock content %}

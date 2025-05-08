@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Service Center Search Platform - Find the Best Service Centers{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<h1>Welcome to the Home Page</h1>
+<div class="row">
+    <div class="col-md-12 mb-5">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">Find the Perfect Service Center</h1>
+                <p class="col-md-8 fs-4">Discover reliable service centers for all your needs. Compare ratings, read reviews, and get detailed information.</p>
+                <div class="row mt-4">
+                    <div class="col-md-8">
+                        <form action="{% url 'search:search' %}" method="GET" class="d-flex">
+                            <input class="form-control me-2" type="search" name="query" placeholder="Search by name, location, or service..." aria-label="Search">
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h2 class="mb-4">Popular Categories</h2>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center service-card mb-4">
+            <div class="card-body">
+                <i class="fas fa-car fa-3x mb-3 text-primary"></i>
+                <h5 class="card-title">Automotive</h5>
+                <p class="card-text">Find repair shops, dealerships, and specialty service centers for your vehicle.</p>
+                <a href="{% url 'search:search' %}?category=automotive" class="btn btn-outline-primary">Explore</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center service-card mb-4">
+            <div class="card-body">
+                <i class="fas fa-laptop fa-3x mb-3 text-primary"></i>
+                <h5 class="card-title">Electronics</h5>
+                <p class="card-text">Service centers for computers, phones, TVs, and other electronic devices.</p>
+                <a href="{% url 'search:search' %}?category=electronics" class="btn btn-outline-primary">Explore</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center service-card mb-4">
+            <div class="card-body">
+                <i class="fas fa-home fa-3x mb-3 text-primary"></i>
+                <h5 class="card-title">Home Appliances</h5>
+                <p class="card-text">Service centers for refrigerators, washing machines, and other home appliances.</p>
+                <a href="{% url 'search:search' %}?category=home_appliances" class="btn btn-outline-primary">Explore</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center service-card mb-4">
+            <div class="card-body">
+                <i class="fas fa-mobile-alt fa-3x mb-3 text-primary"></i>
+                <h5 class="card-title">Mobile Phones</h5>
+                <p class="card-text">Repair centers and service locations for all mobile phone brands.</p>
+                <a href="{% url 'search:search' %}?category=mobile_phones" class="btn btn-outline-primary">Explore</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-12">
+        <h2 class="mb-4">How It Works</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-0 bg-light h-100">
+                    <div class="card-body text-center">
+                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 80px; height: 80px;">
+                            <h3>1</h3>
+                        </div>
+                        <h4>Search</h4>
+                        <p>Enter your location or the type of service you need to find available service centers.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 bg-light h-100">
+                    <div class="card-body text-center">
+                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 80px; height: 80px;">
+                            <h3>2</h3>
+                        </div>
+                        <h4>Compare</h4>
+                        <p>Review ratings, read customer reviews, and compare service offerings to find the right fit.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 bg-light h-100">
+                    <div class="card-body text-center">
+                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 80px; height: 80px;">
+                            <h3>3</h3>
+                        </div>
+                        <h4>Connect</h4>
+                        <p>Get contact information, directions, and operating hours to connect with your chosen service center.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <h2 class="mb-4">Top Rated Service Centers</h2>
+    </div>
+    <!-- This section will be populated dynamically when implemented -->
+    <div class="col-md-12">
+        <p class="text-center my-4">
+            <a href="{% url 'service_center_list' %}" class="btn btn-primary">View All Service Centers</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ service_center.name }} - Service Center Details{% endblock %}
+
+{% block extra_css %}
+<style>
+    .gallery-thumbnail {
+        cursor: pointer;
+        transition: opacity 0.3s;
+        height: 100px;
+        object-fit: cover;
+    }
+    .gallery-thumbnail:hover {
+        opacity: 0.8;
+    }
+    .business-hours th {
+        width: 120px;
+    }
+    .business-hours td, .business-hours th {
+        padding: 8px 15px;
+    }
+    .business-hours tr:nth-child(even) {
+        background-color: rgba(0, 0, 0, 0.03);
+    }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'service_center_list' %}">Service Centers</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ service_center.name }}</li>
+        </ol>
+    </nav>
+
+    <!-- Service Center Header -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h1>{{ service_center.name }}</h1>
+            <p class="text-muted">
+                <i class="fas fa-map-marker-alt me-1"></i> {{ service_center.address }}, {{ service_center.city }}, {{ service_center.state }} {{ service_center.zip_code }}
+            </p>
+        </div>
+        {% if service_center.logo %}
+            <img src="{{ service_center.logo.url }}" alt="{{ service_center.name }} Logo" style="max-height: 80px; max-width: 120px;">
+        {% endif %}
+    </div>
+
+    <!-- Service Center Photos -->
+    <div class="card mb-4">
+        <div class="card-body p-0">
+            <div id="servicePhotos" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% if service_center.featured_image %}
+                        <div class="carousel-item active">
+                            <img src="{{ service_center.featured_image.url }}" class="d-block w-100" alt="{{ service_center.name }}" style="height: 400px; object-fit: cover;">
+                        </div>
+                    {% endif %}
+                    {% for image in service_center.images.all %}
+                        <div class="carousel-item {% if not service_center.featured_image and forloop.first %}active{% endif %}">
+                            <img src="{{ image.image.url }}" class="d-block w-100" alt="{{ image.alt_text|default:service_center.name }}" style="height: 400px; object-fit: cover;">
+                        </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#servicePhotos" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#servicePhotos" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>About {{ service_center.name }}</h4>
+        </div>
+        <div class="card-body">
+            <p>{{ service_center.description|linebreaks }}</p>
+        </div>
+    </div>
+
+    <!-- Services and Categories -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Services</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for service_type in service_center.service_types.all %}
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i> {{ service_type.name }}
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item text-muted">No service information available</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Categories</h5>
+                </div>
+                <div class="card-body">
+                    {% for category in service_center.categories.all %}
+                        <a href="{% url 'service_center_list' %}?category={{ category.slug }}" class="badge bg-primary text-decoration-none me-1">
+                            {{ category.name }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Business Hours -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Business Hours</h5>
+        </div>
+        <div class="card-body">
+            <table class="business-hours w-100">
+                <tr><th>Monday</th><td>{{ service_center.monday_hours|default:"Not specified" }}</td></tr>
+                <tr><th>Tuesday</th><td>{{ service_center.tuesday_hours|default:"Not specified" }}</td></tr>
+                <tr><th>Wednesday</th><td>{{ service_center.wednesday_hours|default:"Not specified" }}</td></tr>
+                <tr><th>Thursday</th><td>{{ service_center.thursday_hours|default:"Not specified" }}</td></tr>
+                <tr><th>Friday</th><td>{{ service_center.friday_hours|default:"Not specified" }}</td></tr>
+                <tr><th>Saturday</th><td>{{ service_center.saturday_hours|default:"Not specified" }}</td></tr>
+                <tr><th>Sunday</th><td>{{ service_center.sunday_hours|default:"Not specified" }}</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Contact Information</h5>
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <i class="fas fa-phone-alt me-2 text-primary"></i>
+                    <a href="tel:{{ service_center.phone_number }}">{{ service_center.phone_number }}</a>
+                </li>
+                {% if service_center.email %}
+                <li class="list-group-item">
+                    <i class="fas fa-envelope me-2 text-primary"></i>
+                    <a href="mailto:{{ service_center.email }}">{{ service_center.email }}</a>
+                </li>
+                {% endif %}
+                {% if service_center.website %}
+                <li class="list-group-item">
+                    <i class="fas fa-globe me-2 text-primary"></i>
+                    <a href="{{ service_center.website }}" target="_blank" rel="noopener">Visit Website</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
